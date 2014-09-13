@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 
 import java.util.Random;
@@ -22,7 +23,12 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Remove title
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.activity_main);
+
         // Initialization
         randomGen = new Random();
         res = getResources();
@@ -64,14 +70,19 @@ public class MainActivity extends Activity {
 
     }
 
-    // Generates a random background color to display
+    // Generates random colors to display
     public void setColor(){
         // Find root view
-        View someView = findViewById(R.id.textView1);
-        View root = someView.getRootView();
+        View buttonView = findViewById(R.id.button);
+        View root = buttonView.getRootView();
         // Initializes color array
         String[] colors = res.getStringArray(R.array.colors_array);
-        // Set the color
-        root.setBackgroundColor(Color.parseColor(colors[randomGen.nextInt(colors.length)]));
+        String[] secColors = res.getStringArray(R.array.sec_colors_array);
+        // Generates a random number
+        int randNum = randomGen.nextInt(colors.length);
+        // Set the background color
+        root.setBackgroundColor(Color.parseColor(colors[randNum]));
+        // Set the button color
+        buttonView.setBackgroundColor(Color.parseColor(secColors[randNum]));
     }
 }
