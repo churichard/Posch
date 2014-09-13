@@ -2,8 +2,8 @@
 <resources>
 
     <string name="app_name">PosiChallenge</string>
-    <string name="button1">Finished it like a boss.</string>
-    <string name="button2">Gimme another challenge.</string>
+    <string name="button1">Finished it like a boss</string>
+    <string name="button2">Gimme another challenge</string>
     <string-array name="challenges_array">
         <item>starting up a conversation with a stranger.</item>
         <item>doing a favor for someone.</item>

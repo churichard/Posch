@@ -3,9 +3,12 @@ package pennapps2014f.posichallenge;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
-import java.io.IOException;
-import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class DateChangeReceiver extends BroadcastReceiver {
 
@@ -14,15 +17,15 @@ public class DateChangeReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        final String action = intent.getAction();
+        Log.d("DateChange", "Midnight has passed");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -1);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date yesterday = calendar.getTime();
 
-        if(action.equals(Intent.ACTION_DATE_CHANGED)) {
-            Date date = new Date(System.currentTimeMillis() - 3600000);
-            try {
-                MainActivity.dateCache.getString(date.toString()).getString();
-            } catch (IOException e) {
-                ProgressActivity.setDateIncomplete(date);
-            }
+        if(MainActivity.dateStorage.getString(dateFormat.format(yesterday), "no entry").equals("no entry")) {
+            ProgressActivity.setDateIncomplete(yesterday);
+            MainActivity.editor.putString(dateFormat.format(yesterday), "incomplete");
         }
     }
 }

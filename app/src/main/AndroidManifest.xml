@@ -31,9 +31,6 @@
             android:name=".DateChangeReceiver"
             android:enabled="true"
             android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.DATE_CHANGED" />
-            </intent-filter>
         </receiver>
     </application>
 

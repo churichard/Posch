@@ -5,20 +5,19 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import com.roomorama.caldroid.CaldroidFragment;
 
-import java.io.IOException;
-import java.sql.Date;
 import java.util.Calendar;
+import java.util.Date;
 
 public class ProgressActivity extends ActionBarActivity {
-    private static CaldroidFragment caldroidFragment;
+    private static CaldroidFragment caldroidFragment = new CaldroidFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        caldroidFragment = new CaldroidFragment();
         Bundle args = new Bundle();
         Calendar cal = Calendar.getInstance();
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
@@ -52,22 +51,14 @@ public class ProgressActivity extends ActionBarActivity {
     }
 
     public static void setDateComplete(Date date) {
-        try {
-            MainActivity.dateCache.put(date.toString(), "");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         caldroidFragment.setBackgroundResourceForDate(R.color.complete, date);
+        caldroidFragment.setTextColorForDate(R.color.white, date);
         caldroidFragment.refreshView();
     }
 
     public static void setDateIncomplete(Date date) {
-        try {
-            MainActivity.dateCache.put(date.toString(), "");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         caldroidFragment.setBackgroundResourceForDate(R.color.incomplete, date);
+        caldroidFragment.setTextColorForDate(R.color.white, date);
         caldroidFragment.refreshView();
     }
 }
