@@ -1,16 +1,22 @@
 package pennapps2014f.posichallenge;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
-public class MyActivity extends Activity {
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
+        setText();
     }
 
     @Override
@@ -30,5 +36,14 @@ public class MyActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setText(){
+        Resources res = getResources();
+        String[] challenges = res.getStringArray(R.array.challenges_array);
+        TextView textView = (TextView) findViewById(R.id.textView1);
+        textView.setGravity(Gravity.CENTER);
+        textView.setText(challenges[0]);
+        textView.append(" " + challenges[1]);
     }
 }

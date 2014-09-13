@@ -9,8 +9,11 @@
     tools:context=".MyActivity">
 
     <TextView
-        android:textSize="70px"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/textView1"
+        android:textSize="50sp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

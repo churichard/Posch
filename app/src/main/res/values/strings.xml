@@ -3,7 +3,7 @@
 
     <string name="app_name">PosiChallenge</string>
     <string-array name="challenges_array">
-        <item>Today, challenge yourself by </item>
+        <item>Today, challenge yourself by</item>
         <item>talking to a stranger</item>
         <item>holding the door open for someone</item>
         <item>doing a favor for someone</item>
