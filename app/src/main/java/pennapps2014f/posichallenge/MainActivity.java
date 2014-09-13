@@ -1,36 +1,37 @@
 package pennapps2014f.posichallenge;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.sql.Date;
+import com.roomorama.caldroid.CaldroidFragment;
+
+import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Random;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends android.support.v4.app.FragmentActivity {
+    // Calendar fragment
+    public static HomeFragment homeFragment;
+    public static ProgressFragment progressFragment;
+
     // Storage of dates and completions/incompletions
     public static SharedPreferences dateStorage;
     public static SharedPreferences.Editor editor;
@@ -38,15 +39,6 @@ public class MainActivity extends Activity {
     // Alarm manager
     private AlarmManager alarmManager;
     private PendingIntent alarmIntent;
-
-    // Resources
-    private Resources res;
-    // Random generator
-    private Random randomGen;
-    // Challenges
-    private String[] challenges;
-    // Challenge text
-    private TextView textView;
 
     // Drawer stuff
     private DrawerLayout drawerLayout;
@@ -58,14 +50,12 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.drawer_frame_layout);
 
-        setContentView(R.layout.activity_main);
+        homeFragment = new HomeFragment();
+        progressFragment = new ProgressFragment();
 
-        // Initialization
-        randomGen = new Random();
-        res = getResources();
-
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayoutMain);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawerToggle = new ActionBarDrawerToggle(
                 this,
                 drawerLayout,
@@ -83,7 +73,8 @@ public class MainActivity extends Activity {
                 invalidateOptionsMenu();
             }
         };
-        drawerList = (ListView) findViewById(R.id.drawerListMain);
+
+        drawerList = (ListView) findViewById(R.id.drawerList);
         drawerListItems = new ArrayList<String>();
         drawerListItems.add("Home");
         drawerListItems.add("My Progress");
@@ -111,19 +102,7 @@ public class MainActivity extends Activity {
         calendar.set(Calendar.SECOND, 0);
         alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
 
-        // Sets challenge and background color
-        setText();
-        setColor();
-
-        final Button button2 = (Button) findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Generates a random number
-                int randNum = randomGen.nextInt(challenges.length);
-                // Sets the challenge
-                textView.setText("Today, positively challenge yourself by " + challenges[randNum]);
-            }
-        });
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, homeFragment).commit();
     }
 
     @Override
@@ -174,38 +153,13 @@ public class MainActivity extends Activity {
         editor.commit();
     }
 
-    // Generates a random challenge to display
-    public void setText(){
-        // Creates new font
-        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/HansKendrick-Regular.ttf");
-        // Initializes string array
-        challenges = res.getStringArray(R.array.challenges_array);
-        // Sets textView properties
-        textView = (TextView) findViewById(R.id.textView1);
-        textView.setTypeface(font);
-        // Generates a random number
-        int randNum = randomGen.nextInt(challenges.length);
-        // Sets the challenge
-        textView.setText("Today, positively challenge yourself by " + challenges[randNum]);
-
-    }
-
-    // Generates random colors to display
-    public void setColor(){
-        // Find root view
-        View buttonView = findViewById(R.id.button1);
-        View root = buttonView.getRootView();
-        // Initializes color array
-        String[] colors = res.getStringArray(R.array.colors_array);
-        // Generates a random number
-        int randNum = randomGen.nextInt(colors.length);
-        // Set the background color
-        root.setBackgroundColor(Color.parseColor(colors[randNum]));
-    }
-
-    public void viewProgress(View v) {
-        Intent intent = new Intent(this, ProgressActivity.class);
-        startActivity(intent);
+    @Override
+    public void onBackPressed() {
+        if(drawerLayout.isDrawerOpen(Gravity.LEFT)) {
+            drawerLayout.closeDrawer(Gravity.LEFT);
+        } else{
+            super.onBackPressed();
+        }
     }
 
     public void completeChallenge(View v) {
@@ -213,7 +167,7 @@ public class MainActivity extends Activity {
         Date today = new Date(System.currentTimeMillis());
 
         editor.putString(dateFormat.format(today), "complete");
-        ProgressActivity.setDateComplete(today);
+        progressFragment.setDateComplete(today);
         Toast.makeText(this, "You're awesome, keep up the positivity.", Toast.LENGTH_LONG).show();
     }
 
@@ -224,16 +178,30 @@ public class MainActivity extends Activity {
         }
 
         private void displayView(int position) {
+            android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
             switch(position) {
                 case 0:
-                    drawerLayout.closeDrawers();
+                    getSupportFragmentManager().popBackStack("progress", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    transaction.replace(R.id.fragmentContainer, homeFragment).commit();
                     break;
                 case 1:
-                    startActivity(new Intent(getApplicationContext(), ProgressActivity.class));
+                    Bundle args = new Bundle();
+                    Calendar cal = Calendar.getInstance();
+                    args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
+                    args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
+                    if(progressFragment.getArguments() == null) {
+                        progressFragment.setArguments(args);
+                    }
+
+                    transaction.replace(R.id.fragmentContainer, progressFragment);
+                    transaction.addToBackStack("progress");
+                    transaction.commit();
                     break;
                 default:
                     break;
             }
+            drawerLayout.closeDrawers();
         }
     }
 }

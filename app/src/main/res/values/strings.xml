@@ -4,6 +4,7 @@
     <string name="app_name">PosiChallenge</string>
     <string name="button1">Finished it like a boss.</string>
     <string name="button2">Gimme a different challenge.</string>
+
     <string-array name="challenges_array">
         <item>starting up a conversation with a stranger.</item>
         <item>doing a favor for someone.</item>
@@ -29,9 +30,12 @@
         <item>#ffecf0f1</item>
         <item>#ff95a5a6</item>
     </string-array>
+
     <color name="lightgray">#70808080</color>
     <color name="darkgray">#90808080</color>
     <color name="black">#ffffffff</color>
+
     <string name="action_settings">Settings</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
