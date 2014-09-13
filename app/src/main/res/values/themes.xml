@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- the theme applied to the application or activity -->
+    <style name="GrayTheme"
+        parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/GrayActionBar</item>
+    </style>
+
+    <!-- Title text style -->
+    <style name="GrayActionBar.TitleTextStyle" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/caldroid_black</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="GrayActionBar"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/lightgray</item>
+        <item name="android:titleTextStyle">@style/GrayActionBar.TitleTextStyle</item>
+    </style>
+</resources>
