@@ -46,9 +46,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Remove title
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         setContentView(R.layout.activity_main);
 
         // Initialization
@@ -168,6 +165,6 @@ public class MainActivity extends Activity {
 
         editor.putString(dateFormat.format(today), "complete");
         ProgressActivity.setDateComplete(today);
-        Toast.makeText(this, "Good job! Keep being positive!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "You're awesome, keep up the positivity.", Toast.LENGTH_LONG).show();
     }
 }
