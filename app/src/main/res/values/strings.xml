@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">PosiChallenge</string>
+    <string name="button1">Finished it like a boss.</string>
+    <string name="button2">Gimme another challenge.</string>
     <string-array name="challenges_array">
         <item>starting up a conversation with a stranger.</item>
         <item>doing a favor for someone.</item>
@@ -10,7 +12,7 @@
         <item>hugging someone.</item>
         <item>high-fiving someone.</item>
         <item>telling someone you love them.</item>
-        <item>kissing someone.</item>
+        <item>kissing someone on the cheek.</item>
         <item>giving someone a pleasant surprise.</item>
         <item>showing someone a cute cat video.</item>
         <item>showing someone a cute dog video.</item>

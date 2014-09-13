@@ -88,7 +88,8 @@ public class MainActivity extends Activity {
     // Generates random colors to display
     public void setColor(){
         // Find root view
-        View buttonView = findViewById(R.id.button);
+        View buttonView = findViewById(R.id.button1);
+        View buttonView2 = findViewById(R.id.button2);
         View root = buttonView.getRootView();
         // Initializes color array
         String[] colors = res.getStringArray(R.array.colors_array);
@@ -99,5 +100,6 @@ public class MainActivity extends Activity {
         root.setBackgroundColor(Color.parseColor(colors[randNum]));
         // Set the button color
         buttonView.setBackgroundColor(Color.parseColor(secColors[randNum]));
+        buttonView2.setBackgroundColor(Color.parseColor(secColors[randNum]));
     }
 }
