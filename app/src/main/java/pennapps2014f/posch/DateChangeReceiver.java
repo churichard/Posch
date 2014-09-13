@@ -1,4 +1,4 @@
-package pennapps2014f.posichallenge;
+package pennapps2014f.posch;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

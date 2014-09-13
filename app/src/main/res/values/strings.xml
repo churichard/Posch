@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">PosiChallenge</string>
+    <string name="app_name">Posch</string>
     <string name="button1">Finished it like a boss.</string>
     <string name="button2">Gimme a different challenge.</string>
 

@@ -1,4 +1,4 @@
-package pennapps2014f.posichallenge;
+package pennapps2014f.posch;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import pennapps2014f.posch.R;
 
 public class DrawerListAdapter extends BaseAdapter {
     private Context context;

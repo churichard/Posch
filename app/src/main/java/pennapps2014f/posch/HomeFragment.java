@@ -1,4 +1,4 @@
-package pennapps2014f.posichallenge;
+package pennapps2014f.posch;
 
 
 
@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Random;
+
+import pennapps2014f.posichallenge.R;
 
 public class HomeFragment extends Fragment {
     private Activity mainActivity;

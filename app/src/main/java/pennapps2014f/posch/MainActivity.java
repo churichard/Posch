@@ -1,4 +1,4 @@
-package pennapps2014f.posichallenge;
+package pennapps2014f.posch;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -25,6 +25,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import pennapps2014f.posch.R;
 
 
 public class MainActivity extends android.support.v4.app.FragmentActivity {
