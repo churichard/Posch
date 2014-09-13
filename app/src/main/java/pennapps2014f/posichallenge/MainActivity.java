@@ -6,23 +6,29 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Map;
 import java.util.Random;
+
 
 public class MainActivity extends Activity {
     // Storage of dates and completions/incompletions
@@ -34,13 +40,20 @@ public class MainActivity extends Activity {
     private PendingIntent alarmIntent;
 
     // Resources
-    Resources res;
+    private Resources res;
     // Random generator
-    Random randomGen;
+    private Random randomGen;
     // Challenges
-    String[] challenges;
+    private String[] challenges;
     // Challenge text
-    TextView textView;
+    private TextView textView;
+
+    // Drawer stuff
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle drawerToggle;
+    private ListView drawerList;
+    private ArrayList<String> drawerListItems;
+    private DrawerListAdapter drawerListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,22 +64,44 @@ public class MainActivity extends Activity {
         // Initialization
         randomGen = new Random();
         res = getResources();
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayoutMain);
+        drawerToggle = new ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                R.drawable.ic_drawer,
+                R.string.app_name,
+                R.string.app_name
+        ) {
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                invalidateOptionsMenu();
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                invalidateOptionsMenu();
+            }
+        };
+        drawerList = (ListView) findViewById(R.id.drawerListMain);
+        drawerListItems = new ArrayList<String>();
+        drawerListItems.add("Home");
+        drawerListItems.add("My Progress");
+        drawerListAdapter = new DrawerListAdapter(getApplicationContext(), drawerListItems);
+        drawerList.setAdapter(drawerListAdapter);
+        drawerList.setOnItemClickListener(new DrawerItemClickListener());
+        drawerLayout.setDrawerListener(drawerToggle);
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setDisplayShowHomeEnabled(true);
+
         dateStorage = getPreferences(Context.MODE_PRIVATE);
         editor = dateStorage.edit();
+
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, DateChangeReceiver.class);
         alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-
-        // Redisplay complete/incomplete challenges
-        for(Map.Entry<String, ?> entry : dateStorage.getAll().entrySet()) {
-            Date date = Date.valueOf(entry.getKey());
-
-            if((entry.getValue()).equals("complete")) {
-                ProgressActivity.setDateComplete(date);
-            } else if((entry.getValue()).equals("incomplete")) {
-                ProgressActivity.setDateIncomplete(date);
-            }
-        }
 
         // Set to broadcast to DateChangeReceiver every midnight
         Calendar calendar = Calendar.getInstance();
@@ -104,6 +139,9 @@ public class MainActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        if(drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         if (id == R.id.action_settings) {
             return true;
         }
@@ -119,9 +157,20 @@ public class MainActivity extends Activity {
     }
 
     @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration config) {
+        super.onConfigurationChanged(config);
+        drawerToggle.onConfigurationChanged(config);
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
-
         editor.commit();
     }
 
@@ -166,5 +215,25 @@ public class MainActivity extends Activity {
         editor.putString(dateFormat.format(today), "complete");
         ProgressActivity.setDateComplete(today);
         Toast.makeText(this, "You're awesome, keep up the positivity.", Toast.LENGTH_LONG).show();
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            displayView(position);
+        }
+
+        private void displayView(int position) {
+            switch(position) {
+                case 0:
+                    drawerLayout.closeDrawers();
+                    break;
+                case 1:
+                    startActivity(new Intent(getApplicationContext(), ProgressActivity.class));
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

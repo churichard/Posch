@@ -3,4 +3,5 @@
     <color name="complete">#27AE60</color>
     <color name="incomplete">#C0392B</color>
     <color name="white">#ECF0F1</color>
+    <color name="gray">#BDC3C7</color>
 </resources>
