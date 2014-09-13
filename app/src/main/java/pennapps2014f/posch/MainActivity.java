@@ -26,9 +26,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import pennapps2014f.posch.R;
-
-
 public class MainActivity extends android.support.v4.app.FragmentActivity {
     // Calendar fragment
     public static HomeFragment homeFragment;

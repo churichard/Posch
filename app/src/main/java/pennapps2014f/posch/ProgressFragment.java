@@ -7,8 +7,6 @@ import com.roomorama.caldroid.CaldroidFragment;
 import java.util.Date;
 import java.util.Map;
 
-import pennapps2014f.posichallenge.R;
-
 public class ProgressFragment extends CaldroidFragment {
 
     public ProgressFragment() {
