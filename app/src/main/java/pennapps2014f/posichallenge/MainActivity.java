@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.File;
@@ -25,6 +26,10 @@ public class MainActivity extends Activity {
     Resources res;
     // Random generator
     Random randomGen;
+    // Challenges
+    String[] challenges;
+    // Challenge text
+    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,23 @@ public class MainActivity extends Activity {
         // Sets challenge and background color
         setText();
         setColor();
+
+        final Button button1 = (Button) findViewById(R.id.button1);
+        button1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Does some stuff
+            }
+        });
+
+        final Button button2 = (Button) findViewById(R.id.button2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Generates a random number
+                int randNum = randomGen.nextInt(challenges.length);
+                // Sets the challenge
+                textView.setText("Today, positively challenge yourself by " + challenges[randNum]);
+            }
+        });
     }
 
     @Override
@@ -76,12 +98,14 @@ public class MainActivity extends Activity {
         // Creates new font
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/HansKendrick-Regular.ttf");
         // Initializes string array
-        String[] challenges = res.getStringArray(R.array.challenges_array);
+        challenges = res.getStringArray(R.array.challenges_array);
         // Sets textView properties
-        TextView textView = (TextView) findViewById(R.id.textView1);
+        textView = (TextView) findViewById(R.id.textView1);
         textView.setTypeface(font);
+        // Generates a random number
+        int randNum = randomGen.nextInt(challenges.length);
         // Sets the challenge
-        textView.append("Today, positively challenge yourself by " + challenges[randomGen.nextInt(challenges.length)]);
+        textView.setText("Today, positively challenge yourself by " + challenges[randNum]);
 
     }
 
@@ -89,7 +113,6 @@ public class MainActivity extends Activity {
     public void setColor(){
         // Find root view
         View buttonView = findViewById(R.id.button1);
-        View buttonView2 = findViewById(R.id.button2);
         View root = buttonView.getRootView();
         // Initializes color array
         String[] colors = res.getStringArray(R.array.colors_array);
