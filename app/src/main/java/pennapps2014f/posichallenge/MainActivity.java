@@ -11,9 +11,15 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
+import cz.fhucho.android.util.SimpleDiskCache;
+
 public class MainActivity extends Activity {
+    public static SimpleDiskCache dateCache;
+    private static final int DISK_CACHE_SIZE = 1024 * 1024 * 5; // 5 MB
 
     // Resources
     Resources res;
@@ -32,6 +38,15 @@ public class MainActivity extends Activity {
         // Initialization
         randomGen = new Random();
         res = getResources();
+
+        // Create/open cache
+        try {
+            File cacheDir = getFilesDir();
+            dateCache = SimpleDiskCache.open(cacheDir, 1, DISK_CACHE_SIZE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         // Sets challenge and background color
         setText();
         setColor();

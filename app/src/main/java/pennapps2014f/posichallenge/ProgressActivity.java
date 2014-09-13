@@ -7,11 +7,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.roomorama.caldroid.CaldroidFragment;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.util.Calendar;
 
 public class ProgressActivity extends ActionBarActivity {
-    CaldroidFragment caldroidFragment;
+    private static CaldroidFragment caldroidFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +51,22 @@ public class ProgressActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setDateComplete(Date date) {
+    public static void setDateComplete(Date date) {
+        try {
+            MainActivity.dateCache.put(date.toString(), "");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         caldroidFragment.setBackgroundResourceForDate(R.color.complete, date);
         caldroidFragment.refreshView();
     }
 
-    public void setDateIncomplete(Date date) {
+    public static void setDateIncomplete(Date date) {
+        try {
+            MainActivity.dateCache.put(date.toString(), "");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         caldroidFragment.setBackgroundResourceForDate(R.color.incomplete, date);
         caldroidFragment.refreshView();
     }
