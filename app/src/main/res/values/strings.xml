@@ -3,18 +3,29 @@
 
     <string name="app_name">PosiChallenge</string>
     <string-array name="challenges_array">
-        <item>talking to a stranger.</item>
-        <item>holding the door open for someone.</item>
+        <item>starting up a conversation with a stranger.</item>
         <item>doing a favor for someone.</item>
         <item>buying a gift for someone.</item>
         <item>giving someone a compliment.</item>
+        <item>hugging someone.</item>
+        <item>high-fiving someone.</item>
+        <item>telling someone you love them.</item>
+        <item>kissing someone.</item>
+        <item>giving someone a pleasant surprise.</item>
+        <item>showing someone a cute cat video.</item>
+        <item>showing someone a cute dog video.</item>
+        <item>comforting someone who is feeling down.</item>
     </string-array>
     <string-array name="colors_array">
         <item>#ff1abc9c</item>
         <item>#ff2ecc71</item>
         <item>#ff3498db</item>
         <item>#ff9b59b6</item>
-        <item>#ff34495e</item>
+        <item>#fff1c40f</item>
+        <item>#ffe67e22</item>
+        <item>#ffe74c3c</item>
+        <item>#ffecf0f1</item>
+        <item>#ff95a5a6</item>
     </string-array>
     <string name="action_settings">Settings</string>
 

@@ -60,7 +60,7 @@ public class MainActivity extends Activity {
         TextView textView = (TextView) findViewById(R.id.textView1);
         textView.setTypeface(font);
         // Sets the challenge
-        textView.append("Today, challenge yourself by " + challenges[randomGen.nextInt(challenges.length)]);
+        textView.append("Today, positively challenge yourself by " + challenges[randomGen.nextInt(challenges.length)]);
 
     }
 
