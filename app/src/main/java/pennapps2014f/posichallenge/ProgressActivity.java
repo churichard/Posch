@@ -5,11 +5,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import com.roomorama.caldroid.CaldroidFragment;
-
 import java.util.Calendar;
-
 
 public class ProgressActivity extends ActionBarActivity {
 

@@ -3,14 +3,19 @@
 
     <string name="app_name">PosiChallenge</string>
     <string-array name="challenges_array">
-        <item>Today, challenge yourself by</item>
-        <item>talking to a stranger</item>
-        <item>holding the door open for someone</item>
-        <item>doing a favor for someone</item>
-        <item>buying a gift for someone</item>
-        <item>giving someone a compliment</item>
+        <item>talking to a stranger.</item>
+        <item>holding the door open for someone.</item>
+        <item>doing a favor for someone.</item>
+        <item>buying a gift for someone.</item>
+        <item>giving someone a compliment.</item>
+    </string-array>
+    <string-array name="colors_array">
+        <item>#ff1abc9c</item>
+        <item>#ff2ecc71</item>
+        <item>#ff3498db</item>
+        <item>#ff9b59b6</item>
+        <item>#ff34495e</item>
     </string-array>
     <string name="action_settings">Settings</string>
-    <color name="blue">#ff00bfff</color>
 
 </resources>

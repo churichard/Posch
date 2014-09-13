@@ -2,21 +2,33 @@ package pennapps2014f.posichallenge;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Random;
+
 public class MainActivity extends Activity {
+
+    // Resources
+    Resources res;
+    // Random generator
+    Random randomGen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my);
+        setContentView(R.layout.activity_main);
+        // Initialization
+        randomGen = new Random();
+        res = getResources();
+        // Sets challenge and background color
         setText();
+        setColor();
     }
 
     @Override
@@ -38,12 +50,28 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Generates a random challenge to display
     public void setText(){
-        Resources res = getResources();
+        // Creates new font
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/HansKendrick-Regular.ttf");
+        // Initializes string array
         String[] challenges = res.getStringArray(R.array.challenges_array);
+        // Sets textView properties
         TextView textView = (TextView) findViewById(R.id.textView1);
-        textView.setGravity(Gravity.CENTER);
-        textView.setText(challenges[0]);
-        textView.append(" " + challenges[1]);
+        textView.setTypeface(font);
+        // Sets the challenge
+        textView.append("Today, challenge yourself by " + challenges[randomGen.nextInt(challenges.length)]);
+
+    }
+
+    // Generates a random background color to display
+    public void setColor(){
+        // Find root view
+        View someView = findViewById(R.id.textView1);
+        View root = someView.getRootView();
+        // Initializes color array
+        String[] colors = res.getStringArray(R.array.colors_array);
+        // Set the color
+        root.setBackgroundColor(Color.parseColor(colors[randomGen.nextInt(colors.length)]));
     }
 }
