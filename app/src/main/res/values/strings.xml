@@ -11,5 +11,6 @@
         <item>giving someone a compliment</item>
     </string-array>
     <string name="action_settings">Settings</string>
+    <color name="blue">#ff00bfff</color>
 
 </resources>
