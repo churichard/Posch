@@ -29,6 +29,7 @@
                 android:layout_height="fill_parent"
                 android:layout_below="@id/textView1"
                 android:layout_marginTop="40dp"
+                android:background="@drawable/buttons"
                 android:text="@string/button1" />
 
             <Button
@@ -37,6 +38,7 @@
                 android:layout_height="fill_parent"
                 android:layout_below="@id/button1"
                 android:layout_marginTop="15dp"
+                android:background="@drawable/buttons"
                 android:text="@string/button2" />
 
         </RelativeLayout>

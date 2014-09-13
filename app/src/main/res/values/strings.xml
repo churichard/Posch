@@ -29,17 +29,8 @@
         <item>#ffecf0f1</item>
         <item>#ff95a5a6</item>
     </string-array>
-    <string-array name="sec_colors_array">
-        <item>#ff16a085</item>
-        <item>#ff27ae60</item>
-        <item>#ff2980b9</item>
-        <item>#ff8e44ad</item>
-        <item>#fff39c12</item>
-        <item>#ffd35400</item>
-        <item>#ffc0392b</item>
-        <item>#ffbdc3c7</item>
-        <item>#ff7f8c8d</item>
-    </string-array>
+    <color name="lightgray">#70808080</color>
+    <color name="darkgray">#90808080</color>
     <string name="action_settings">Settings</string>
 
 </resources>
