@@ -6,15 +6,18 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.roomorama.caldroid.CaldroidFragment;
+
+import java.sql.Date;
 import java.util.Calendar;
 
 public class ProgressActivity extends ActionBarActivity {
+    CaldroidFragment caldroidFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        CaldroidFragment caldroidFragment = new CaldroidFragment();
+        caldroidFragment = new CaldroidFragment();
         Bundle args = new Bundle();
         Calendar cal = Calendar.getInstance();
         args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
@@ -27,7 +30,6 @@ public class ProgressActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_progress);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -46,5 +48,15 @@ public class ProgressActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setDateComplete(Date date) {
+        caldroidFragment.setBackgroundResourceForDate(R.color.complete, date);
+        caldroidFragment.refreshView();
+    }
+
+    public void setDateIncomplete(Date date) {
+        caldroidFragment.setBackgroundResourceForDate(R.color.incomplete, date);
+        caldroidFragment.refreshView();
     }
 }
