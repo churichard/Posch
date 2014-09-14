@@ -17,16 +17,6 @@ public class ProgressFragment extends CaldroidFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Redisplay complete/incomplete challenges
-        for(Map.Entry<String, ?> entry : MainActivity.dateStorage.getAll().entrySet()) {
-            java.sql.Date date = java.sql.Date.valueOf(entry.getKey());
-
-            if((entry.getValue()).equals("complete")) {
-                setDateComplete(date);
-            } else if((entry.getValue()).equals("incomplete")) {
-                setDateIncomplete(date);
-            }
-        }
         refreshView();
     }
 

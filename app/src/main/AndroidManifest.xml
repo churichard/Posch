@@ -21,11 +21,6 @@
             </intent-filter>
         </activity>
 
-        <receiver
-            android:name="pennapps2014f.posch.DateChangeReceiver"
-            android:enabled="true"
-            android:exported="true" >
-        </receiver>
     </application>
 
 </manifest>

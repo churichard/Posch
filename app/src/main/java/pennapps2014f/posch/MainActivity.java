@@ -1,9 +1,6 @@
 package pennapps2014f.posch;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -34,14 +31,6 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
     // Calendar fragment
     public static HomeFragment homeFragment;
     public static ProgressFragment progressFragment;
-
-    // Storage of dates and completions/incompletions
-    public static SharedPreferences dateStorage;
-    public static SharedPreferences.Editor dateEditor;
-
-    // Alarm manager
-    private AlarmManager alarmManager;
-    private PendingIntent alarmIntent;
 
     // Drawer stuff
     private DrawerLayout drawerLayout;
@@ -99,22 +88,6 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(true);
-
-        dateStorage = getSharedPreferences("DatePrefs", Context.MODE_PRIVATE);
-        dateEditor = dateStorage.edit();
-
-        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, DateChangeReceiver.class);
-        alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-
-        // Set to broadcast to DateChangeReceiver every midnight
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.add(Calendar.DATE, 1);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, homeFragment).commit();
 
@@ -201,7 +174,6 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        dateEditor.commit();
         editor.commit();
     }
 
@@ -219,9 +191,14 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date today = new Date(System.currentTimeMillis());
 
-            dateEditor.putString(dateFormat.format(today), "complete");
             progressFragment.setDateComplete(today);
             Toast.makeText(this, "You're awesome, keep up the positivity.", Toast.LENGTH_LONG).show();
+
+            // Hide button and show text
+            View buttonView = findViewById(R.id.button1);
+            buttonView.setVisibility(View.INVISIBLE);
+            TextView textView = (TextView) findViewById(R.id.textView2);
+            textView.setText("Nice, you've completed your challenge for today.");
 
             editor.putBoolean("buttonVisibility", false);
             editor.putBoolean("challengeFinishText", true);
