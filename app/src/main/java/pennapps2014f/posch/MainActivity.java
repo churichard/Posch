@@ -32,6 +32,10 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
     public static HomeFragment homeFragment;
     public static ProgressFragment progressFragment;
 
+    // Date completion storage
+    public static SharedPreferences dateStorage;
+    public static SharedPreferences.Editor dateEditor;
+
     // Drawer stuff
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
@@ -54,6 +58,8 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 
         applicationContext = getApplicationContext();
 
+        dateStorage = getSharedPreferences("DatePrefs", Context.MODE_PRIVATE);
+        dateEditor = dateStorage.edit();
         storage = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         editor = storage.edit();
 
@@ -161,7 +167,10 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 
         if (currTime >= storage.getInt("midnight", 999999999)){
             if (!MainActivity.storage.getBoolean("challengeFinished", false)) {
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
                 cal.add(Calendar.DATE, -1);
+                dateEditor.putString(format.format(cal.getTime()), "incomplete");
                 MainActivity.progressFragment.setDateIncomplete(cal.getTime());
             }
 
@@ -180,6 +189,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
     protected void onStop() {
         super.onStop();
         editor.commit();
+        dateEditor.commit();
     }
 
     @Override
@@ -196,6 +206,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date today = new Date(System.currentTimeMillis());
 
+            dateEditor.putString(dateFormat.format(today), "complete");
             progressFragment.setDateComplete(today);
             Toast.makeText(this, "You're awesome, keep up the positivity.", Toast.LENGTH_LONG).show();
 
