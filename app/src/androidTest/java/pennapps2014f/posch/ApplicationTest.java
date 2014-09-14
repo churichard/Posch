@@ -1,4 +1,4 @@
-package pennapps2014f.posichallenge;
+package pennapps2014f.posch;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
