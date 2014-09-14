@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -16,7 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 
 import com.roomorama.caldroid.CaldroidFragment;
 
@@ -25,6 +28,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class MainActivity extends android.support.v4.app.FragmentActivity {
     // Calendar fragment
@@ -33,7 +37,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 
     // Storage of dates and completions/incompletions
     public static SharedPreferences dateStorage;
-    public static SharedPreferences.Editor editor;
+    public static SharedPreferences.Editor dateEditor;
 
     // Alarm manager
     private AlarmManager alarmManager;
@@ -46,6 +50,11 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
     private ArrayList<String> drawerListItems;
     private DrawerListAdapter drawerListAdapter;
 
+    // Challenge maintenance
+    public static Context applicationContext;
+    public static SharedPreferences storage; // App storage
+    public static SharedPreferences.Editor editor; // App storage editor
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +62,11 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
 
         homeFragment = new HomeFragment();
         progressFragment = new ProgressFragment();
+
+        applicationContext = getApplicationContext();
+
+        storage = PreferenceManager.getDefaultSharedPreferences(applicationContext);
+        editor = storage.edit();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawerToggle = new ActionBarDrawerToggle(
@@ -86,8 +100,8 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
         getActionBar().setHomeButtonEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(true);
 
-        dateStorage = getPreferences(Context.MODE_PRIVATE);
-        editor = dateStorage.edit();
+        dateStorage = getSharedPreferences("DatePrefs", Context.MODE_PRIVATE);
+        dateEditor = dateStorage.edit();
 
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, DateChangeReceiver.class);
@@ -102,6 +116,22 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
         alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, homeFragment).commit();
+
+        // Midnight tonight
+        Calendar calEnd = new GregorianCalendar();
+        calEnd.setTime(new Date());
+        calEnd.set(Calendar.DAY_OF_YEAR, calEnd.get(Calendar.DAY_OF_YEAR)+1);
+        calEnd.set(Calendar.HOUR_OF_DAY, 0);
+        calEnd.set(Calendar.MINUTE, 0);
+        calEnd.set(Calendar.SECOND, 0);
+        calEnd.set(Calendar.MILLISECOND, 0);
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        int midnightTonight = Integer.parseInt(dateFormat.format(calEnd.getTime()).toString());
+        Log.d("loggy", "Midnight: " + Integer.toString(midnightTonight));
+
+        editor.putInt("midnight", midnightTonight);
+        editor.commit();
     }
 
     @Override
@@ -147,8 +177,30 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
     }
 
     @Override
+    protected void onResume(){
+        super.onResume();
+
+        Calendar cal = new GregorianCalendar();
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        int currTime = Integer.parseInt(dateFormat.format(cal.getTime()).toString());
+        Log.d("loggy", "Current Time: " + currTime);
+
+        if (currTime >= storage.getInt("midnight", 999999999)){
+            editor.putBoolean("newDay", true); // If the app is opened on a new day
+            editor.putBoolean("challengeFinished", false); // If the challenge is finished or not
+            editor.putBoolean("challengeSkipped", false); // If a challenge was skipped or not
+            editor.putBoolean("challengeFinishText", false); // Text that appears when a challenge is finished
+            editor.putBoolean("buttonVisibility", true); // Whether or not the finish challenge button is visible
+            editor.putString("currentChallenge", "N/A"); // Challenge of the day
+            editor.putString("currentColor", "N/A"); // Color of the day
+            editor.commit();
+        }
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
+        dateEditor.commit();
         editor.commit();
     }
 
@@ -162,12 +214,19 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
     }
 
     public void completeChallenge(View v) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date today = new Date(System.currentTimeMillis());
+        if (!storage.getBoolean("challengeFinished", false)) {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date today = new Date(System.currentTimeMillis());
 
-        editor.putString(dateFormat.format(today), "complete");
-        progressFragment.setDateComplete(today);
-        Toast.makeText(this, "You're awesome, keep up the positivity.", Toast.LENGTH_LONG).show();
+            dateEditor.putString(dateFormat.format(today), "complete");
+            progressFragment.setDateComplete(today);
+            Toast.makeText(this, "You're awesome, keep up the positivity.", Toast.LENGTH_LONG).show();
+
+            editor.putBoolean("buttonVisibility", false);
+            editor.putBoolean("challengeFinishText", true);
+            editor.putBoolean("challengeFinished", true);
+            editor.commit();
+        }
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {

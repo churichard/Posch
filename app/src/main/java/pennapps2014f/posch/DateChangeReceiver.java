@@ -25,7 +25,8 @@ public class DateChangeReceiver extends BroadcastReceiver {
 
         if(MainActivity.dateStorage.getString(dateFormat.format(yesterday), "no entry").equals("no entry")) {
             MainActivity.progressFragment.setDateIncomplete(yesterday);
-            MainActivity.editor.putString(dateFormat.format(yesterday), "incomplete");
+            MainActivity.dateEditor.putString(dateFormat.format(yesterday), "incomplete");
+            MainActivity.dateEditor.commit();
         }
     }
 }
