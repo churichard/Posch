@@ -88,10 +88,10 @@ public class HomeFragment extends Fragment {
         Typeface font = Typeface.createFromAsset(mainActivity.getAssets(), "fonts/HansKendrick-Regular.ttf");
         // Initializes string array
         challenges = res.getStringArray(R.array.challenges_array);
+        // Sets textView properties
+        textView = (TextView) fragmentView.findViewById(R.id.textView1);
+        textView.setTypeface(font);
         if (MainActivity.storage.getBoolean("newDay", true)) {
-            // Sets textView properties
-            textView = (TextView) fragmentView.findViewById(R.id.textView1);
-            textView.setTypeface(font);
             // Generates a random number
             int randNum = randomGen.nextInt(challenges.length);
             // Sets the challenge
