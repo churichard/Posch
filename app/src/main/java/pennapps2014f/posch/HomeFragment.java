@@ -86,9 +86,9 @@ public class HomeFragment extends Fragment {
     public void setText(){
         // Creates new font
         Typeface font = Typeface.createFromAsset(mainActivity.getAssets(), "fonts/HansKendrick-Regular.ttf");
+        // Initializes string array
+        challenges = res.getStringArray(R.array.challenges_array);
         if (MainActivity.storage.getBoolean("newDay", true)) {
-            // Initializes string array
-            challenges = res.getStringArray(R.array.challenges_array);
             // Sets textView properties
             textView = (TextView) fragmentView.findViewById(R.id.textView1);
             textView.setTypeface(font);
@@ -110,9 +110,9 @@ public class HomeFragment extends Fragment {
         // Find root view
         View buttonView = fragmentView.findViewById(R.id.button1);
         root = buttonView.getRootView();
+        // Initializes color array
+        colors = res.getStringArray(R.array.colors_array);
         if (MainActivity.storage.getBoolean("newDay", true)) {
-            // Initializes color array
-            colors = res.getStringArray(R.array.colors_array);
             // Generates a random number
             int randNum = randomGen.nextInt(colors.length);
             // Set the background color

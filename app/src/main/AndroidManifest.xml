@@ -7,7 +7,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/GrayTheme"
+        android:theme="@style/Theme.Darkandlight"
         tools:replace="android:theme" >
         <activity
             android:name="pennapps2014f.posch.MainActivity"
