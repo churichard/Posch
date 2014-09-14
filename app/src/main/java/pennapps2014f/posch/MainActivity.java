@@ -160,6 +160,12 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
         Log.d("loggy", "Current Time: " + currTime);
 
         if (currTime >= storage.getInt("midnight", 999999999)){
+            if (MainActivity.storage.getBoolean("challengeFinished", false)){
+                MainActivity.progressFragment.setDateIncomplete(cal.getTime());
+            }
+            else{
+                MainActivity.progressFragment.setDateComplete(cal.getTime());
+            }
             editor.putBoolean("newDay", true); // If the app is opened on a new day
             editor.putBoolean("challengeFinished", false); // If the challenge is finished or not
             editor.putBoolean("challengeSkipped", false); // If a challenge was skipped or not
