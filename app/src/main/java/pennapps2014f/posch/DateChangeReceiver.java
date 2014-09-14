@@ -17,7 +17,6 @@ public class DateChangeReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("DateChange", "Midnight has passed");
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -1);
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");

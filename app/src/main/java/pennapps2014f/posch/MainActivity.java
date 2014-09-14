@@ -110,6 +110,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
         // Set to broadcast to DateChangeReceiver every midnight
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.add(Calendar.DATE, 1);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
