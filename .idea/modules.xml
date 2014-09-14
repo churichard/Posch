@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Posch.iml" filepath="$PROJECT_DIR$/Posch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PosiChallenge.iml" filepath="$PROJECT_DIR$/PosiChallenge.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/facebook/facebook.iml" filepath="$PROJECT_DIR$/facebook/facebook.iml" />
     </modules>
   </component>
 </project>

@@ -1,6 +1,7 @@
 package pennapps2014f.posch;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -18,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.util.Log;
 
+import com.facebook.UiLifecycleHelper;
+import com.facebook.widget.FacebookDialog;
 import com.roomorama.caldroid.CaldroidFragment;
 
 import java.util.Date;
@@ -48,6 +51,9 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
     public static SharedPreferences storage; // App storage
     public static SharedPreferences.Editor editor; // App storage editor
 
+    // Facebook
+    private UiLifecycleHelper uiHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +68,9 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
         dateEditor = dateStorage.edit();
         storage = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         editor = storage.edit();
+
+        uiHelper = new UiLifecycleHelper(this, null);
+        uiHelper.onCreate(savedInstanceState);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawerToggle = new ActionBarDrawerToggle(
@@ -159,6 +168,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
     @Override
     protected void onResume(){
         super.onResume();
+        uiHelper.onResume();
 
         Calendar cal = new GregorianCalendar();
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
@@ -174,6 +184,8 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
                 MainActivity.progressFragment.setDateIncomplete(cal.getTime());
             }
 
+            findViewById(R.id.shareChallengeButton).setVisibility(View.INVISIBLE);
+
             editor.putBoolean("newDay", true); // If the app is opened on a new day
             editor.putBoolean("challengeFinished", false); // If the challenge is finished or not
             editor.putBoolean("challengeSkipped", false); // If a challenge was skipped or not
@@ -186,10 +198,22 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        uiHelper.onPause();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         editor.commit();
         dateEditor.commit();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        uiHelper.onDestroy();
     }
 
     @Override
@@ -199,6 +223,23 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
         } else{
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        uiHelper.onActivityResult(requestCode, resultCode, intent, new FacebookDialog.Callback() {
+            @Override
+            public void onComplete(FacebookDialog.PendingCall pendingCall, Bundle data) {
+                Log.i("FacebookAuth", "Success");
+            }
+
+            @Override
+            public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
+                Log.e("FacebookAuth", error.toString());
+            }
+        });
     }
 
     public void completeChallenge(View v) {
@@ -213,6 +254,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
             // Hide button and show text
             View buttonView = findViewById(R.id.button1);
             buttonView.setVisibility(View.INVISIBLE);
+            findViewById(R.id.shareChallengeButton).setVisibility(View.VISIBLE);
             TextView textView = (TextView) findViewById(R.id.textView2);
             textView.setText("Nice, you've completed your challenge for today.");
 
@@ -220,6 +262,32 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
             editor.putBoolean("challengeFinishText", true);
             editor.putBoolean("challengeFinished", true);
             editor.commit();
+        }
+    }
+
+    public void shareToFacebook(View v) {
+        if (FacebookDialog.canPresentShareDialog(getApplicationContext(), FacebookDialog.ShareDialogFeature.SHARE_DIALOG)) {
+            String currentChallenge = storage.getString("currentChallenge", "N/A");
+
+            if(!currentChallenge.equals("N/A")) {
+                // Publish the post using the Share Dialog
+                FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(this)
+                        .setName("Posch")
+                        .setDescription("I just completed a challenge on Posch! I challenged myself by " + currentChallenge)
+                        .setLink("https://github.com/churichard/Posch")
+                        .build();
+                uiHelper.trackPendingDialogCall(shareDialog.present());
+            } else {
+                // Publish the post using the Share Dialog
+                FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(this)
+                        .setName("Posch")
+                        .setDescription("I just completed a challenge on Posch!")
+                        .build();
+                uiHelper.trackPendingDialogCall(shareDialog.present());
+            }
+
+        } else {
+            Toast.makeText(this, "Facebook app isn't installed on your phone", Toast.LENGTH_LONG).show();
         }
     }
 

@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 20
-    buildToolsVersion "20.0.0"
+    buildToolsVersion '20.0.0'
     defaultConfig {
         applicationId 'pennapps2014f.posch'
         minSdkVersion 15
@@ -26,4 +26,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:20.+'
     compile 'com.roomorama:caldroid:1.1.1'
     compile 'com.jakewharton:disklrucache:2.0.2'
+    compile project(':facebook')
 }

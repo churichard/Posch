@@ -55,6 +55,17 @@
                     android:background="@drawable/buttons"
                     android:text="@string/button2" />
 
+                <Button
+                    android:id="@+id/shareChallengeButton"
+                    android:layout_height="fill_parent"
+                    android:layout_width="fill_parent"
+                    android:layout_below="@id/button2"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/buttons"
+                    android:text="@string/shareButton"
+                    android:onClick="shareToFacebook"
+                    android:visibility="invisible" />
+
             </RelativeLayout>
 
         </ScrollView>
