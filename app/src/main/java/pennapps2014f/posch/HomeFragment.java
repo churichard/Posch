@@ -139,16 +139,19 @@ public class HomeFragment extends Fragment {
         if (!MainActivity.storage.getBoolean("buttonVisibility", true)) {
             // Hide button and display a message
             buttonView.setVisibility(View.INVISIBLE);
-        }
-        else {
+        } else {
             buttonView.setVisibility(View.VISIBLE);
         }
         // Sets the challenge finished text visibility
         if (MainActivity.storage.getBoolean("challengeFinishText", false)) {
             textView.setText("Nice, you've completed your challenge for today.");
-        }
-        else{
+        } else{
             textView.setText("");
+        }
+        if(MainActivity.storage.getBoolean("shareButtonVisibility", false)) {
+            fragmentView.findViewById(R.id.shareChallengeButton).setVisibility(View.VISIBLE);
+        } else {
+            fragmentView.findViewById(R.id.shareChallengeButton).setVisibility(View.INVISIBLE);
         }
     }
 }

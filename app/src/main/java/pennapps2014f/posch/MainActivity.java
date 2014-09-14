@@ -184,13 +184,12 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
                 MainActivity.progressFragment.setDateIncomplete(cal.getTime());
             }
 
-            findViewById(R.id.shareChallengeButton).setVisibility(View.INVISIBLE);
-
             editor.putBoolean("newDay", true); // If the app is opened on a new day
             editor.putBoolean("challengeFinished", false); // If the challenge is finished or not
             editor.putBoolean("challengeSkipped", false); // If a challenge was skipped or not
             editor.putBoolean("challengeFinishText", false); // Text that appears when a challenge is finished
             editor.putBoolean("buttonVisibility", true); // Whether or not the finish challenge button is visible
+            editor.putBoolean("shareButtonVisibility", false);
             editor.putString("currentChallenge", "N/A"); // Challenge of the day
             editor.putString("currentColor", "N/A"); // Color of the day
             editor.commit();
@@ -259,6 +258,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
             textView.setText("Nice, you've completed your challenge for today.");
 
             editor.putBoolean("buttonVisibility", false);
+            editor.putBoolean("shareButtonVisibility", true);
             editor.putBoolean("challengeFinishText", true);
             editor.putBoolean("challengeFinished", true);
             editor.commit();
@@ -272,6 +272,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
             if(!currentChallenge.equals("N/A")) {
                 // Publish the post using the Share Dialog
                 FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(this)
+                        .setApplicationName("Posch")
                         .setName("Posch")
                         .setDescription("I just completed a challenge on Posch! I challenged myself by " + currentChallenge)
                         .setLink("https://github.com/churichard/Posch")
@@ -280,6 +281,7 @@ public class MainActivity extends android.support.v4.app.FragmentActivity {
             } else {
                 // Publish the post using the Share Dialog
                 FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(this)
+                        .setApplicationName("Posch")
                         .setName("Posch")
                         .setDescription("I just completed a challenge on Posch!")
                         .build();
